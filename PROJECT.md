@@ -4,7 +4,8 @@ A second, completely different design for the same client. Version 1 stays as it
 
 - **Local folder:** `~/orryx-v2`
 - **Local preview:** `cd ~/orryx-v2 && python3 -m http.server 5300` → http://localhost:5300/
-- **Repo:** https://github.com/alliancestreetgoa-lang/OrryxV2 (private; not live anywhere yet)
+- **Live site:** https://alliancestreetgoa-lang.github.io/OrryxV2/ (GitHub Pages, live since 20 November 2026)
+- **Repo:** https://github.com/alliancestreetgoa-lang/OrryxV2 (public since 20 November 2026, because GitHub Pages needs a public repo on this plan; **push to `main` = deploy**, the live site updates in about a minute)
 - **Built:** 20 November 2026
 
 ## The one rule that matters most: the logo
@@ -141,7 +142,7 @@ Eight pictures were generated on 20 November 2026 in ChatGPT (Chrome), in one ch
 
 ## Open items
 
-- Not live. The repo is private. To publish like Version 1 it must be made public and GitHub Pages switched on. The owner decides.
-- The page carries `noindex`, so search engines ignore it while two versions exist. Remove that line (and add the Version 1 search files: JSON-LD, sitemap.xml, robots.txt, llms.txt) only if this version is chosen as the real site.
+- Live on GitHub Pages since 20 November 2026 (owner asked: "Commit, push, and deploy it on GitHub"). Every push to `main` goes live, so test locally first.
+- The pages still carry `noindex`, so search engines ignore this version while two versions are live. Remove that line (and add the Version 1 search files: JSON-LD, sitemap.xml, robots.txt, llms.txt) only if this version is chosen as the real site.
 - Still needed from the client: email, phone, domain. The enquiry form is not connected.
 - Client to confirm our descriptive wording, as in Version 1.
