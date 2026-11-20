@@ -49,10 +49,10 @@
 
   /* ---------- feelings ---------- */
   var moods = {
-    stretched: ['“The business has grown, but every decision still lands on my desk.”', 'We look at how the business is organised and run, and help it work without you in every room.', '7020.00', 'Management consultancy'],
-    unsure: ['“There are three good directions and one budget. I cannot see which comes first.”', 'We set out the real options, recommend a direction and put the steps in the order they should happen.', '7020.11', 'Strategy advisory'],
-    exposed: ['“Sales look fine, yet cash is tight, and I cannot see why.”', 'We read what the business earns, needs and can afford, and explain it in plain language.', '6619.14', 'Financial consultancy'],
-    ready: ['“It is time to buy a business. Or it is time to sell mine.”', 'We arrange the purchase and sale of small and medium sized businesses and professional practices. Not real estate brokerage.', '7490.02', 'Business brokerage']
+    stretched: ['“The business has grown, but every decision still lands on my desk.”', 'We look at how the business is organised and run, and help it work without you in every room.', '7020.00', 'Management consultancy', 'management-consultancy/'],
+    unsure: ['“There are three good directions and one budget. I cannot see which comes first.”', 'We set out the real options, recommend a direction and put the steps in the order they should happen.', '7020.11', 'Strategy advisory', 'strategy-advisory/'],
+    exposed: ['“Sales look fine, yet cash is tight, and I cannot see why.”', 'We read what the business earns, needs and can afford, and explain it in plain language.', '6619.14', 'Financial consultancy', 'financial-consultancy/'],
+    ready: ['“It is time to buy a business. Or it is time to sell mine.”', 'We arrange the purchase and sale of small and medium sized businesses and professional practices. Not real estate brokerage.', '7490.02', 'Business brokerage', 'business-brokerage/']
   };
   var panel = $('#feelPanel');
   function showMood(key, tab) {
@@ -62,6 +62,7 @@
       panel.setAttribute('data-mood', key);
       $('#feelQuote').textContent = m[0]; $('#feelAnswer').textContent = m[1];
       $('#feelCode').textContent = m[2]; $('#feelName').textContent = m[3];
+      var fl = $('#feelLink'); if (fl) fl.setAttribute('href', m[4]);
     };
     if (hasGsap && !reduce) {
       var els = $$('.feel-text > *', panel);
@@ -80,6 +81,11 @@
 
   /* ---------- enquiry form ---------- */
   var form = $('#enqForm');
+  (function () {   // service pages link here with ?about=management | strategy | finance | brokerage
+    var m = /[?&]about=([a-z]+)/.exec(location.search), map = { management: 'Management consultancy', strategy: 'Strategy advisory', finance: 'Financial consultancy', brokerage: 'Business brokerage' };
+    if (!m || !map[m[1]] || !form) return;
+    $$('input[name="topic"]', form).forEach(function (r) { r.checked = r.value === map[m[1]]; });
+  })();
   if (form) form.addEventListener('submit', function (e) {
     e.preventDefault();
     var note = $('#formNote'), f = new FormData(form);
@@ -102,9 +108,25 @@
     t.innerHTML = t.textContent.trim().split(/\s+/).map(function (w) { return '<span class="w"><span>' + w + '</span></span>'; }).join(' ');
   });
 
+  /* ---------- method line (same idea as Version 1): a gentle S-curve down the middle of the five steps ---------- */
+  var flow = $('.flow'), flowSvg = $('.flow-line'), flowFg = $('#flowPath'), flowBg = flowSvg ? $('.flow-bg', flowSvg) : null, flowLen = 0, flowP = { p: 1 };
+  function layoutFlow() {
+    if (!flow || !flowFg) return;
+    var h = flow.offsetHeight, c = 60, a = innerWidth < 900 ? 16 : 48;   // a = how far the line swings to each side
+    var d = 'M' + c + ' 0 C ' + (c + a) + ' ' + (.12 * h) + ', ' + (c - a) + ' ' + (.22 * h) + ', ' + c + ' ' + (.34 * h) +
+            ' S ' + (c + a) + ' ' + (.56 * h) + ', ' + c + ' ' + (.68 * h) + ' S ' + (c - a) + ' ' + (.88 * h) + ', ' + c + ' ' + h;
+    flowSvg.setAttribute('viewBox', '0 0 120 ' + h);
+    flowBg.setAttribute('d', d); flowFg.setAttribute('d', d);
+    flowLen = flowFg.getTotalLength();
+    flowFg.style.strokeDasharray = flowLen;
+    flowFg.style.strokeDashoffset = flowLen * (1 - flowP.p);
+  }
+
   var loader = $('#loader');
   function showAll() {
     doc.classList.remove('js'); if (loader) loader.style.display = 'none';
+    layoutFlow(); $$('[data-step]').forEach(function (st) { st.classList.add('is-in'); });
+    window.addEventListener('resize', layoutFlow);
     var rf = $('#ringFg'); if (rf) rf.style.strokeDashoffset = 1 - window.__lic.frac;
   }
   if (!hasGsap || reduce) { showAll(); return; }
@@ -129,22 +151,29 @@
     });
   }
 
-  /* loader: the logo draws itself, then the page opens */
-  $('#nav').classList.add('is-hidden');
-  var num = $('#loaderNum'), cnt = { v: 0 };
+  /* opening: the logo draws itself, then the page opens. Shown once per visit; coming back from a
+     service page, or arriving on a link to a section, goes straight to the page. */
+  var quick = doc.classList.contains('quick'), navEl = $('#nav'), T = 0;
   var intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
   window.__intro = intro;
-  $$('.ld-tip').forEach(function (c) { intro.to(c, { attr: { r: 60 }, duration: .16, ease: 'none' }, +c.getAttribute('data-at')); });
-  intro.to('.ld-draw', { strokeDashoffset: 0, autoRound: false, duration: 1.45, stagger: .3, ease: 'power2.inOut' }, 0)
-    .call(function () { var g = $('#ldMark'); if (g) g.removeAttribute('mask'); }, null, 1.9)
-    .to('.ld-letter', { opacity: 1, duration: .45, stagger: .035, ease: 'power2.out' }, .95)
-    .to(cnt, { v: 100, duration: 1.7, ease: 'power1.inOut', onUpdate: function () { num.textContent = Math.round(cnt.v); } }, 0)
-    .to('.loader-mark', { scale: 1.06, duration: .5, ease: 'power2.in' }, 2.15)
-    .to(loader, { yPercent: -100, duration: .9, ease: 'power4.inOut', onComplete: function () { loader.style.display = 'none'; } }, 2.35)
-    .from('.hero-bg img', { scale: 1.25, duration: 2.4, ease: 'power2.out' }, 2.35)
-    .call(function () { $('#nav').classList.remove('is-hidden'); }, null, 2.7)
-    .to('.hero-title .line>span', { y: 0, duration: 1.1, stagger: .12, ease: 'power4.out' }, 2.75)
-    .to('.hero .reveal', { opacity: 1, y: 0, duration: .9, stagger: .1 }, 3.15);
+  if (quick) {
+    if (loader) loader.style.display = 'none';
+  } else {
+    navEl.classList.add('is-hidden');
+    var num = $('#loaderNum'), cnt = { v: 0 };
+    T = 2.35;
+    $$('.ld-tip').forEach(function (c) { intro.to(c, { attr: { r: 60 }, duration: .16, ease: 'none' }, +c.getAttribute('data-at')); });
+    intro.to('.ld-draw', { strokeDashoffset: 0, autoRound: false, duration: 1.45, stagger: .3, ease: 'power2.inOut' }, 0)
+      .call(function () { var g = $('#ldMark'); if (g) g.removeAttribute('mask'); }, null, 1.9)
+      .to('.ld-letter', { opacity: 1, duration: .45, stagger: .035, ease: 'power2.out' }, .95)
+      .to(cnt, { v: 100, duration: 1.7, ease: 'power1.inOut', onUpdate: function () { num.textContent = Math.round(cnt.v); } }, 0)
+      .to('.loader-mark', { scale: 1.06, duration: .5, ease: 'power2.in' }, 2.15)
+      .to(loader, { yPercent: -100, duration: .9, ease: 'power4.inOut', onComplete: function () { loader.style.display = 'none'; try { sessionStorage.setItem('orryx-seen', '1'); } catch (e) {} } }, T)
+      .call(function () { navEl.classList.remove('is-hidden'); }, null, T + .35);
+  }
+  intro.from('.hero-bg img', { scale: quick ? 1.1 : 1.25, duration: quick ? 1.6 : 2.4, ease: 'power2.out' }, T)
+    .to('.hero-title .line>span', { y: 0, duration: 1.1, stagger: .12, ease: 'power4.out' }, T + (quick ? .1 : .4))
+    .to('.hero .reveal', { opacity: 1, y: 0, duration: .9, stagger: .1 }, T + (quick ? .4 : .8));
 
   /* testing aid: add ?hold=1.2 to the address to freeze the opening at that second */
   var hold = /[?&]hold=([\d.]+)/.exec(location.search); if (hold) intro.pause(+hold[1]);
@@ -169,7 +198,6 @@
 
   /* pictures drift inside their windows */
   $$('.shot img').forEach(function (img) {
-    if (img.id === 'loopImg') return;
     gsap.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: img.parentNode, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
 
@@ -198,28 +226,24 @@
   acts.forEach(function (card, i) {
     gsap.from(card, { y: 90, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 92%' } });
     if (i < acts.length - 1) {
-      gsap.to(card, { scale: 1 - (acts.length - 1 - i) * .035, filter: 'brightness(.8)', ease: 'none',
+      // start value is stated on purpose: without it the card fades through black on the way to its dimmed state
+      gsap.fromTo(card, { scale: 1, filter: 'brightness(1)' }, { scale: 1 - (acts.length - 1 - i) * .035, filter: 'brightness(.8)', ease: 'none',
         scrollTrigger: { trigger: acts[i + 1], start: 'top 85%', end: 'top 15%', scrub: true } });
     }
   });
 
-  /* method: the line draws and the dot travels as you read the steps */
+  /* method: the same scrolling motion as Version 1. The line draws down the middle as you scroll,
+     each number lights up when reached, and the cards arrive from the left and right in turn. */
   (function () {
-    var img = $('#loopImg'), bar = $('#loopBar'), steps = $$('.step'); if (!img || !steps.length) return;
-    var place = function (p) { gsap.set(img, { xPercent: 11 - 22 * p, yPercent: 4 - 8 * p }); gsap.set(bar, { scaleX: p }); };
-    place(0.02);
-    ScrollTrigger.create({ trigger: '#steps', start: 'top 70%', end: 'bottom 55%', scrub: .6,
-      onUpdate: function (s) { place(Math.max(.02, s.progress)); } });
-    steps.forEach(function (st, i) {
-      ScrollTrigger.create({ trigger: st, start: 'top 62%', end: 'bottom 62%',
-        onToggle: function (s) {
-          if (!s.isActive) return;
-          steps.forEach(function (o) { o.classList.toggle('is-on', o === st); });
-          $('#loopNum').textContent = i + 1; $('#loopName').textContent = st.getAttribute('data-name');
-          gsap.fromTo('.loop-read', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: .4 });
-        } });
+    if (!flow || !flowFg) return;
+    flowP.p = 0; layoutFlow();
+    gsap.to(flowP, { p: 1, ease: 'none', scrollTrigger: { trigger: flow, start: 'top 60%', end: 'bottom 70%', scrub: .6 },
+      onUpdate: function () { flowFg.style.strokeDashoffset = flowLen * (1 - flowP.p); } });
+    ScrollTrigger.addEventListener('refreshInit', layoutFlow);
+    $$('[data-step]').forEach(function (st, i) {
+      gsap.from($('.step-c', st), { x: innerWidth < 900 ? 30 : (i % 2 ? 80 : -80), autoAlpha: 0, rotateY: i % 2 ? -18 : 18, transformPerspective: 900, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: st, start: 'top 78%' } });
+      ScrollTrigger.create({ trigger: st, start: 'top 62%', onEnter: function () { st.classList.add('is-in'); }, onLeaveBack: function () { st.classList.remove('is-in'); } });
     });
-    steps[0].classList.add('is-on');
   })();
 
   /* brokerage */
@@ -250,9 +274,9 @@
   /* top stat counts up */
   $$('[data-count]').forEach(function (el) {
     var o = { v: 0 }, to = +el.getAttribute('data-count');
-    intro.to(o, { v: to, duration: 1.2, onUpdate: function () { el.textContent = Math.round(o.v); } }, 3.3);
+    intro.to(o, { v: to, duration: 1.2, onUpdate: function () { el.textContent = Math.round(o.v); } }, T + .95);
   });
-  (function () { var el = $('#daysLeftTop'), o = { v: 0 }; if (el) intro.to(o, { v: window.__lic.left, duration: 1.6, ease: 'power2.out', onUpdate: function () { el.textContent = Math.round(o.v); } }, 3.3); })();
+  (function () { var el = $('#daysLeftTop'), o = { v: 0 }; if (el) intro.to(o, { v: window.__lic.left, duration: 1.6, ease: 'power2.out', onUpdate: function () { el.textContent = Math.round(o.v); } }, T + .95); })();
 
   /* magnetic buttons */
   if (window.matchMedia('(hover:hover)').matches) $$('.magnetic').forEach(function (b) {
@@ -271,5 +295,9 @@
     ScrollTrigger.create({ trigger: sec, start: 'top 50%', end: 'bottom 50%', onToggle: function (s) { a.classList.toggle('is-active', s.isActive); } });
   });
 
-  window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+  window.addEventListener('load', function () {
+    ScrollTrigger.refresh();
+    var target = location.hash.length > 1 ? $(location.hash) : null;
+    if (target && lenis) lenis.scrollTo(target, { offset: -70, immediate: true });
+  });
 })();

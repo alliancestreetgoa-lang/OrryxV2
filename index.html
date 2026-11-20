@@ -17,10 +17,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=16">
+<link rel="stylesheet" href="css/style.css?v=20">
 <script>
   (function(){var d=document.documentElement;d.classList.add('js');
-  try{var t=localStorage.getItem('orryx-theme');if(t)d.setAttribute('data-theme',t);}catch(e){}})();
+  try{var t=localStorage.getItem('orryx-theme');if(t)d.setAttribute('data-theme',t);}catch(e){}
+  try{if(sessionStorage.getItem('orryx-seen')||location.hash.length>1)d.classList.add('quick');}catch(e){}})();
 </script>
 </head>
 <body>
@@ -156,6 +157,7 @@
           <p class="feel-quote" id="feelQuote">“The business has grown, but every decision still lands on my desk.”</p>
           <p class="feel-answer" id="feelAnswer">We look at how the business is organised and run, and help it work without you in every room.</p>
           <div class="feel-tag"><span class="code" id="feelCode">7020.00</span><span id="feelName">Management consultancy</span></div>
+          <a class="more" id="feelLink" href="management-consultancy/"><span>See this service</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
     </div>
@@ -174,10 +176,11 @@
       <article class="act glass" style="--i:0">
         <div class="act-body">
           <div class="act-top"><span class="code">7020.00</span><span class="act-n">1 / 4</span></div>
-          <h3>Management consultancy</h3>
+          <h3><a href="management-consultancy/">Management consultancy</a></h3>
           <p class="act-q">How should the business be organised and run?</p>
           <p>We examine how decisions are made, who is responsible for what and where the work slows down. Then we help put a clearer way of running the business in place.</p>
           <ul class="chips"><li>Structure</li><li>Roles</li><li>Operations</li></ul>
+          <a class="more" href="management-consultancy/"><span>See what it covers</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div class="act-art">
           <div class="shot"><img src="assets/img/management.webp" alt="Glass organisation structure" loading="lazy" width="1536" height="1024"></div>
@@ -195,10 +198,11 @@
       <article class="act glass" style="--i:1">
         <div class="act-body">
           <div class="act-top"><span class="code">7020.11</span><span class="act-n">2 / 4</span></div>
-          <h3>Strategy advisory</h3>
+          <h3><a href="strategy-advisory/">Strategy advisory</a></h3>
           <p class="act-q">Where does the business go next, and in what order?</p>
           <p>We set out the real options, recommend a direction and write the plan to reach it in plain language, with the steps in the order they should happen.</p>
           <ul class="chips"><li>Options</li><li>Roadmap</li><li>Priorities</li></ul>
+          <a class="more" href="strategy-advisory/"><span>See what it covers</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div class="act-art">
           <div class="shot"><img src="assets/img/strategy.webp" alt="Glass chess knight on a route" loading="lazy" width="1536" height="1024"></div>
@@ -214,11 +218,12 @@
       <article class="act glass" style="--i:2">
         <div class="act-body">
           <div class="act-top"><span class="code">6619.14</span><span class="act-n">3 / 4</span></div>
-          <h3>Financial consultancy</h3>
+          <h3><a href="financial-consultancy/">Financial consultancy</a></h3>
           <p class="act-q">What do the numbers say it earns, needs and can afford?</p>
           <p>We read how the numbers behave, separate symptoms from causes and show what the business can fund, in language an owner can act on.</p>
           <ul class="chips"><li>Review</li><li>Cash</li><li>Budget</li></ul>
           <p class="fine">Activity authorisation issued 18·11·2026.</p>
+          <a class="more" href="financial-consultancy/"><span>See what it covers</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div class="act-art">
           <div class="shot"><img src="assets/img/finance.webp" alt="Glass bars rising like a chart" loading="lazy" width="1536" height="1024"></div>
@@ -236,11 +241,12 @@
       <article class="act glass" style="--i:3">
         <div class="act-body">
           <div class="act-top"><span class="code">7490.02</span><span class="act-n">4 / 4</span></div>
-          <h3>Business brokerage</h3>
+          <h3><a href="business-brokerage/">Business brokerage</a></h3>
           <p class="act-q">Is it time to buy a business, or sell this one?</p>
           <p>We arrange the purchase and sale of small and medium sized businesses, including professional practices, from the first confidential introduction through to completion.</p>
           <ul class="chips"><li>Prepare</li><li>Match</li><li>Arrange</li></ul>
           <p class="fine">Not real estate brokerage.</p>
+          <a class="more" href="business-brokerage/"><span>See what it covers</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div class="act-art">
           <div class="shot"><img src="assets/img/brokerage.webp" alt="Two glass rings linked together" loading="lazy" width="1536" height="1024"></div>
@@ -255,27 +261,24 @@
   </div>
 </section>
 
-<!-- METHOD -->
+<!-- METHOD: same build and scrolling motion as Version 1 (owner asked, 20 Nov): a line draws down the middle, the numbers light up, the cards arrive from each side -->
 <section class="section method" id="method">
-  <div class="wrap method-grid">
-    <div class="method-vis">
-      <div class="method-sticky">
-        <p class="eyebrow reveal"><b>03</b> Method</p>
-        <h2 class="title split">How an engagement flows.</h2>
-        <div class="loop glass">
-          <div class="shot" aria-hidden="true"><img id="loopImg" src="assets/img/method.webp" alt="" loading="lazy" width="1536" height="1024"></div>
-          <div class="loop-bar" aria-hidden="true"><i id="loopBar"></i></div>
-          <div class="loop-read"><span id="loopNum">1</span><b id="loopName">Listen</b></div>
-        </div>
-      </div>
+  <div class="wrap">
+    <div class="head center">
+      <p class="eyebrow reveal"><b>03</b> Method</p>
+      <h2 class="title split">How an engagement flows.</h2>
     </div>
-    <ol class="steps" id="steps">
-      <li class="step glass" data-name="Listen"><span class="step-n">1</span><div><h3>Listen</h3><p>We start with the owner's real question (growth, control, cash or exit) and the facts behind it.</p><small>Brief · data · interviews</small></div></li>
-      <li class="step glass" data-name="Diagnose"><span class="step-n">2</span><div><h3>Diagnose</h3><p>We examine how the business is run and how the numbers behave, and separate symptoms from causes.</p><small>Management and financial review</small></div></li>
-      <li class="step glass" data-name="Design"><span class="step-n">3</span><div><h3>Design</h3><p>We set out the options, a recommended strategy and the plan to reach it, in plain language.</p><small>Strategy · roadmap · budget</small></div></li>
-      <li class="step glass" data-name="Deliver"><span class="step-n">4</span><div><h3>Deliver</h3><p>We stay alongside management while the plan is carried out, and adjust as results arrive.</p><small>Implementation support</small></div></li>
-      <li class="step glass" data-name="Transact"><span class="step-n">5</span><div><h3>Transact</h3><p>When buying or selling a business is the right move, our brokerage desk arranges the deal.</p><small>Buyer and seller introduction</small></div></li>
-    </ol>
+    <div class="shot method-shot reveal" aria-hidden="true"><img src="assets/img/method.webp" alt="" loading="lazy" width="1536" height="1024"></div>
+    <div class="flow">
+      <svg class="flow-line" aria-hidden="true"><path class="flow-bg"/><path class="flow-fg" id="flowPath"/></svg>
+      <ol class="flow-steps" id="steps">
+        <li class="step" data-step><div class="step-n">1</div><div class="step-c glass"><h3>Listen</h3><p>We start with the owner's real question (growth, control, cash or exit) and the facts behind it.</p><small>Brief · data · interviews</small></div></li>
+        <li class="step" data-step><div class="step-n">2</div><div class="step-c glass"><h3>Diagnose</h3><p>We examine how the business is run and how the numbers behave, and separate symptoms from causes.</p><small>Management and financial review</small></div></li>
+        <li class="step" data-step><div class="step-n">3</div><div class="step-c glass"><h3>Design</h3><p>We set out the options, a recommended strategy and the plan to reach it, in plain language.</p><small>Strategy · roadmap · budget</small></div></li>
+        <li class="step" data-step><div class="step-n">4</div><div class="step-c glass"><h3>Deliver</h3><p>We stay alongside management while the plan is carried out, and adjust as results arrive.</p><small>Implementation support</small></div></li>
+        <li class="step" data-step><div class="step-n">5</div><div class="step-c glass"><h3>Transact</h3><p>When buying or selling a business is the right move, our brokerage desk arranges the deal.</p><small>Buyer and seller introduction</small></div></li>
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -401,7 +404,7 @@
       <h4>Registered office</h4>
       <p class="foot-co"><b>Orryx Commodities L.L.C-FZ</b><br>Meydan Grandstand, 6th floor, Meydan Road,<br>Nad Al Sheba, Dubai, U.A.E.</p>
     </div>
-    <div><h4>Activities</h4><a href="#activities">Management consultancy</a><a href="#activities">Strategy advisory</a><a href="#activities">Financial consultancy</a><a href="#activities">Business brokerage</a></div>
+    <div><h4>Activities</h4><a href="management-consultancy/">Management consultancy</a><a href="strategy-advisory/">Strategy advisory</a><a href="financial-consultancy/">Financial consultancy</a><a href="business-brokerage/">Business brokerage</a></div>
     <div><h4>Company</h4><a href="#method">Method</a><a href="#licence">Licence</a><a href="#questions">Questions</a><a href="#enquire">Enquire</a></div>
     <div><h4>Colour</h4>
       <div class="themes foot-themes" role="group" aria-label="Colour theme">
@@ -419,6 +422,6 @@
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
-<script src="js/main.js?v=13"></script>
+<script src="js/main.js?v=15"></script>
 </body>
 </html>
