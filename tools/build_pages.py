@@ -8,7 +8,8 @@ Raise CSS_V / JS_V when css/style.css or js/page.js change, so browsers load the
 """
 import os, re, html
 
-CSS_V, JS_V = 23, 3
+CSS_V, JS_V = 24, 4
+VB = '312 173 1157 616'          # logo box, from tools/logo-meta.json
 ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
 TICK = '<svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7 12.5l3.2 3.2L17 9"/></svg>'
 
@@ -127,6 +128,10 @@ home = open('index.html').read()
 badges = re.findall(r'<div class="mg-badge" aria-hidden="true">(<svg.*?</svg>)\s*</div>', home, re.S)
 assert len(badges) == 4, 'expected the four moving diagrams in index.html'
 
+# the outline of the exact logo mark, for the faint moving pattern behind the page
+mark = re.search(r'<path id="lm"[^>]*>', open('tools/logo-defs.html').read()).group(0)
+open('assets/logo/mark-outline.svg', 'w').write('<svg xmlns="http://www.w3.org/2000/svg" viewBox="%s"><defs>%s</defs></svg>\n' % (VB, mark))
+
 LOGO = ('<img class="logo logo-w" src="../assets/logo/orryx-logo-transparent-white-text.svg" alt="%s" width="1157" height="616">'
         '<img class="logo logo-b" src="../assets/logo/orryx-logo-transparent-black-text.svg" alt="" width="1157" height="616">')
 THEMES = ('<button class="theme-dot" data-set-theme="night" aria-label="Night theme: black and orange" title="Night"></button>'
@@ -182,8 +187,8 @@ def page(p, i):
   <div class="blob b1"></div>
   <div class="blob b2"></div>
   <div class="blob b3"></div>
-  <div class="tiles"></div>
-  <div class="sweep"></div>
+  <svg class="stage-mark" viewBox="{VB}"><use href="../assets/logo/mark-outline.svg#lm" fill="none" stroke-width="2.4"/></svg>
+  <div class="grain"></div>
 </div>
 
 <header class="nav glass" id="nav">
