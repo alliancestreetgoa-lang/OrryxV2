@@ -37,6 +37,15 @@ Three colour templates, switched with the three dots in the menu bar (the choice
 2. **Day** — white page, orange accents, black text.
 3. **Ember** — orange page, black accents.
 
+## The glass finish (owner's direction, 20 November 2026)
+
+The owner rejected the first background (fine dots, dashed outline of the logo, blurred dark patches): "remove all that and make it really fine finish glass tiles. It should look like glass." So:
+
+- **Behind the page:** a wall of polished glass tiles (`.tiles` in `css/style.css`). Each tile has a soft reflection from its top-left corner, a fine bright edge on two sides and a fine dark joint on the other two. Clean light moves slowly behind the wall (`.blob`), and a band of light passes over it (`.sweep`). The wall drifts slightly as you scroll.
+- **Every card and panel** (`.glass`): you see the wall softly through it; a fine bright rim catches the light at the top-left and bottom-right corners; the top carries a soft reflection and the lower edge is a touch deeper, as thick glass is.
+- Do not bring back dots, grain, dashed lines or dark blurred patches. No brown: in the orange template the light behind the tiles is white, never black.
+- The amounts are set per template by the variables at the top of `css/style.css` (`--tile-*` for the wall, `--glass*`, `--gloss-*`, `--rim-*`, `--sheen`, `--depth` for the panels). Dark surfaces (black page, hero, the black top bar of the orange template) share one set.
+
 Type: **Montserrat** for headings and labels (the closest web font to the logo's lettering) and **Manrope** for paragraphs. Arabic: Noto Kufi Arabic.
 
 ## The client (unchanged from Version 1)
@@ -126,6 +135,7 @@ Eight pictures were generated on 20 November 2026 in ChatGPT (Chrome), in one ch
 
 ## Things learned while building (for whoever edits next)
 
+- When replacing a block of CSS by script, check what sits between the two markers first. One edit on 20 Nov removed the base rules (box-sizing, body font, `.wrap`) by accident; the page lost its fonts and widths until they were restored.
 - GSAP rounds pixel values to whole numbers unless `autoRound: false` is set. This froze the line-drawing and the licence ring until fixed.
 - Do not put a CSS `transition: transform` on anything GSAP also moves. Hover moves here use the separate `translate` property instead.
 - `img { max-width: 100% }` silently caps a picture that is meant to be wider than the screen (phone hero). That rule has `max-width: none`.

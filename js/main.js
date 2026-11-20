@@ -202,7 +202,7 @@
   });
 
   /* background shapes react to scrolling */
-  gsap.to('.stage-mark', { rotate: 40, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.2 } });
+  gsap.to('.tiles', { yPercent: -7, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.2 } });   // the tile wall drifts slowly behind the page
 
   /* marquee follows scroll speed */
   (function () {

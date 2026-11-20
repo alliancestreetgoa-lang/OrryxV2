@@ -125,7 +125,7 @@
   $$('.shot img').forEach(function (img) {
     gsap.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: img.parentNode, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
-  gsap.to('.stage-mark', { rotate: 40, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.2 } });
+  gsap.to('.tiles', { yPercent: -7, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.2 } });   // the tile wall drifts slowly behind the page
 
   /* signs: each tick draws itself as its line arrives */
   $$('.sign').forEach(function (el) {
