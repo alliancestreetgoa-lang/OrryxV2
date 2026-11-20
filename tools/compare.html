@@ -1,0 +1,17 @@
+<!doctype html><meta charset="utf-8"><title>logo compare</title>
+<body style="margin:0;background:#222;color:#fff;font:14px sans-serif">
+<canvas id="c" width="1774" height="887" style="width:100%"></canvas><pre id="o"></pre>
+<script>
+(async()=>{
+  const load=s=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=s;});
+  const A=await load('../assets/src/OC%20Logo%20-%20Dark%20Theme.png'), B=await load('../assets/logo/orryx-logo-dark.svg');
+  const mk=img=>{const c=document.createElement('canvas');c.width=1774;c.height=887;const x=c.getContext('2d');x.drawImage(img,0,0,1774,887);return x.getImageData(0,0,1774,887).data;};
+  const a=mk(A), b=mk(B); let big=0, mid=0, sum=0, n=1774*887;
+  const out=document.getElementById('c').getContext('2d'); const id=out.createImageData(1774,887);
+  for(let i=0;i<n;i++){const d=Math.max(Math.abs(a[i*4]-b[i*4]),Math.abs(a[i*4+1]-b[i*4+1]),Math.abs(a[i*4+2]-b[i*4+2])); sum+=d; if(d>128)big++; if(d>64)mid++;
+    id.data[i*4]=d>64?255:a[i*4]/3; id.data[i*4+1]=d>64?0:a[i*4+1]/3; id.data[i*4+2]=d>64?255:a[i*4+2]/3; id.data[i*4+3]=255;}
+  out.putImageData(id,0,0);
+  window.__cmp={pixels:n, over128:big, over64:mid, meanDiff:+(sum/n).toFixed(3)};
+  document.getElementById('o').textContent=JSON.stringify(window.__cmp);
+})();
+</script>
